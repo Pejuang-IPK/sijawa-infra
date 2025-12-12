@@ -1,0 +1,6 @@
+mysql/
+storage/mysql/
+*.sock
+*.pid
+*.cnf
+*.cnf.lock
