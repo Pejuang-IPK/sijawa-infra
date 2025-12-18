@@ -49,14 +49,19 @@ services:
       - infra_net
 
   minio:
-    image: minio/minio:latest
+    image: minio/minio:latest   
+    container_name: minio_sijawa 
     command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"              # Port untuk kodingan PHP upload file
+      - "9001:9001"              # Port untuk kamu buka dashboard di browser
     environment:
-      MINIO_ROOT_USER: admin
-      MINIO_ROOT_PASSWORD: admin123
+      MINIO_ROOT_USER: admin     
+      MINIO_ROOT_PASSWORD: admin123 
     volumes:
       - minio_data:/data
-
+    networks:
+      - infra_net               
   nagios:
     build: ./nagios
     container_name: nagios_sijawa
