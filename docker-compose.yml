@@ -56,6 +56,11 @@ services:
       MINIO_ROOT_PASSWORD: admin123
     volumes:
       - minio_data:/data
+    ports:
+      - "9000:9000" # API / S3 endpoint
+      - "9001:9001" # Web Console
+    networks:
+      - infra_net
 
   nagios:
     build: ./nagios
