@@ -10,23 +10,6 @@ services:
       - infra_net
     restart: always
 
-  nginx:
-    image: nginx:latest
-    container_name: nginx_sijawa
-    ports:
-      - "80:80"
-      - "443:443" # Buka port HTTPS
-    volumes:
-      - ../sijawa-web/src:/var/www/html
-      - ./nginx/conf.d:/etc/nginx/conf.d # Mapping folder config agar lebih rapi
-      - ./certbot/conf:/etc/letsencrypt # Untuk sertifikat SSL
-      - ./certbot/www:/var/www/certbot # Untuk validasi SSL
-    depends_on:
-      - php
-    networks:
-      - infra_net
-    restart: always
-
   mysql:
     image: mysql:8
     container_name: mysql_db
