@@ -10,29 +10,14 @@ services:
       - infra_net
     restart: always
 
-  nginx:
-    image: nginx:latest
-    container_name: nginx_sijawa
-    ports:
-      - "8080:80" # bisa 80 langsung kalau server dedicated
-      - "8443:443"
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-    depends_on:
-      - php
-    networks:
-      - infra_net
-
   mysql:
     image: mysql:8
     container_name: mysql_db
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS} # Sebaiknya gunakan .env file
+      MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: appdb
       MYSQL_USER: appuser
-      MYSQL_PASSWORD: ${DB_PASS}
+      MYSQL_PASSWORD: apppass
     volumes:
       - db_data:/var/lib/mysql
     networks:
@@ -40,42 +25,28 @@ services:
     restart: always
 
   phpmyadmin:
-    image: phpmyadmin:latest
+    image: phpmyadmin
     container_name: phpmyadmin
     environment:
       PMA_HOST: mysql
       PMA_USER: root
-      PMA_PASSWORD: ${DB_ROOT_PASS}
-    # Port 8081 dihapus, akses via subdomain Nginx
-    depends_on:
-      - mysql
+      PMA_PASSWORD: rootpass
     networks:
       - infra_net
     restart: always
 
   minio:
-    image: minio/minio:latest
+    image: minio/minio
     container_name: minio_s3
     command: server /data --console-address ":9001"
     environment:
-      MINIO_ROOT_USER: ${MINIO_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_PASS}
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: miniopass
     volumes:
       - minio_data:/data
-    # Port dihapus, akses via Nginx
     networks:
       - infra_net
     restart: always
-
-  # nagios:
-  #   build: ./nagios
-  #   container_name: nagios_monitor
-  #   # Port 8082 dihapus
-  #   depends_on:
-  #     - mysql
-  #   networks:
-  #     - infra_net
-  #   restart: always
 
 volumes:
   db_data:
