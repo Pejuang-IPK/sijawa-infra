@@ -67,6 +67,12 @@ services:
     container_name: nagios_sijawa
     ports:
       - "8082:80"
+    volumes:
+      - ./nagios/nagios.cfg:/opt/nagios/etc/nagios.cfg
+      - ./nagios/commands.cfg:/opt/nagios/etc/objects/commands.cfg
+      - ./nagios/contacts.cfg:/opt/nagios/etc/objects/contacts.cfg
+      - ./nagios/templates.cfg:/opt/nagios/etc/objects/templates.cfg
+      - ./nagios/servers/:/opt/nagios/etc/servers/
     depends_on:
       - mysql
     networks:

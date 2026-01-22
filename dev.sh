@@ -19,6 +19,8 @@ help_menu() {
   echo " nagios        : Masuk container Nagios"
   echo " minio         : Masuk container MinIO"
   echo ""
+  echo " nagios-watch  : Monitor Nagios config dan auto-reload saat ada perubahan"
+  echo ""
   echo "Fix permission issues automatically"
   echo ""
 }
@@ -36,6 +38,8 @@ case "$1" in
   nginx) docker exec -it nginx_sijawa bash ;;
   nagios) docker exec -it nagios_sijawa bash ;;
   minio) docker exec -it minio_sijawa sh ;;
+  
+  nagios-watch) bash ./nagios-reload.sh ;;
 
   *) help_menu ;;
 esac
